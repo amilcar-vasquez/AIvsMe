@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ARENA AI | World Cup Predictor</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@400;700&amp;family=Inter:wght@400;600&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-surface-variant": "#b9cacb",
+                    "surface-variant": "#353436",
+                    "primary-fixed": "#7df4ff",
+                    "surface-container": "#201f20",
+                    "inverse-surface": "#e5e2e3",
+                    "inverse-primary": "#006970",
+                    "on-tertiary-fixed-variant": "#5700c9",
+                    "on-secondary-fixed": "#121f00",
+                    "tertiary-container": "#e1d2ff",
+                    "on-tertiary-container": "#7213ff",
+                    "tertiary": "#faf3ff",
+                    "background": "#131314",
+                    "secondary-fixed-dim": "#94db00",
+                    "primary-fixed-dim": "#00dbe9",
+                    "on-surface": "#e5e2e3",
+                    "on-tertiary-fixed": "#23005b",
+                    "secondary-fixed": "#a9f900",
+                    "surface": "#131314",
+                    "surface-container-highest": "#353436",
+                    "primary-container": "#00f0ff",
+                    "secondary-container": "#a9f900",
+                    "surface-container-high": "#2a2a2b",
+                    "secondary": "#ffffff",
+                    "error-container": "#93000a",
+                    "on-primary": "#00363a",
+                    "on-error": "#690005",
+                    "outline": "#849495",
+                    "on-secondary-fixed-variant": "#334f00",
+                    "on-error-container": "#ffdad6",
+                    "on-primary-fixed": "#002022",
+                    "tertiary-fixed-dim": "#d1bcff",
+                    "surface-container-low": "#1c1b1c",
+                    "on-primary-fixed-variant": "#004f54",
+                    "surface-tint": "#00dbe9",
+                    "surface-container-lowest": "#0e0e0f",
+                    "on-secondary": "#223600",
+                    "error": "#ffb4ab",
+                    "inverse-on-surface": "#313031",
+                    "outline-variant": "#3b494b",
+                    "tertiary-fixed": "#e9ddff",
+                    "primary": "#dbfcff",
+                    "surface-bright": "#3a393a",
+                    "on-primary-container": "#006970",
+                    "on-background": "#e5e2e3",
+                    "on-secondary-container": "#496f00",
+                    "surface-dim": "#131314",
+                    "on-tertiary": "#3c0090"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "gutter": "16px",
+                    "md": "24px",
+                    "sm": "16px",
+                    "base": "4px",
+                    "margin-mobile": "16px",
+                    "margin-desktop": "48px",
+                    "xl": "64px",
+                    "xs": "8px",
+                    "lg": "40px"
+            },
+            "fontFamily": {
+                    "display-lg": ["Archivo Narrow"],
+                    "title-md": ["Inter"],
+                    "label-sm": ["JetBrains Mono"],
+                    "headline-lg": ["Archivo Narrow"],
+                    "headline-lg-mobile": ["Archivo Narrow"],
+                    "body-md": ["Inter"]
+            },
+            "fontSize": {
+                    "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "title-md": ["18px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                    "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #050505;
+            color: #e5e2e3;
+            -webkit-font-smoothing: antialiased;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .ai-glow {
+            box-shadow: 0 0 20px rgba(0, 219, 233, 0.15);
+        }
+        .human-glow {
+            box-shadow: 0 0 20px rgba(169, 249, 0, 0.1);
+        }
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="font-body-md text-body-md flex flex-col min-h-screen">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-background/80 backdrop-blur-xl border-b border-white/10 shadow-[0_0_15px_rgba(0,219,233,0.1)] flex justify-between items-center px-margin-mobile md:px-margin-desktop h-16">
+<div class="font-display-lg text-headline-lg-mobile md:text-headline-lg tracking-tighter text-primary-fixed">ARENA AI</div>
+<div class="hidden md:flex gap-lg items-center h-full">
+<a class="font-title-md text-title-md text-primary-fixed border-b-2 border-primary-fixed pb-1" href="#">Predict</a>
+<a class="font-title-md text-title-md text-on-surface-variant hover:text-on-surface transition-colors" href="#">Leaderboard</a>
+<a class="font-title-md text-title-md text-on-surface-variant hover:text-on-surface transition-colors" href="#">Results</a>
+</div>
+<div class="flex gap-md items-center text-primary-fixed">
+<span class="material-symbols-outlined cursor-pointer hover:bg-surface-container-high p-base rounded-full transition-all">notifications</span>
+<span class="material-symbols-outlined cursor-pointer hover:bg-surface-container-high p-base rounded-full transition-all" style="font-variation-settings: 'FILL' 1;">account_circle</span>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="flex-grow pt-24 pb-32 px-margin-mobile md:px-margin-desktop max-w-7xl mx-auto w-full">
+<!-- Match Header -->
+<header class="mb-lg">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-md">
+<div>
+<span class="font-label-sm text-label-sm text-primary-fixed-dim uppercase tracking-widest mb-base block">Quarter Finals • Group A</span>
+<h1 class="font-display-lg text-display-lg uppercase italic">Argentina <span class="text-on-surface-variant/30 not-italic">vs</span> Netherlands</h1>
+</div>
+<div class="flex items-center gap-sm bg-surface-container-high px-md py-sm rounded-lg border border-white/5">
+<span class="material-symbols-outlined text-primary-fixed">schedule</span>
+<span class="font-label-sm text-label-sm">STARTS IN 02:45:12</span>
+</div>
+</div>
+</header>
+<!-- Prediction Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-md items-stretch">
+<!-- Left: Human Prediction -->
+<section class="glass-card p-lg rounded-xl flex flex-col gap-lg human-glow relative overflow-hidden">
+<div class="absolute top-0 right-0 p-md opacity-10">
+<span class="material-symbols-outlined text-[120px]">person</span>
+</div>
+<div class="flex items-center gap-sm">
+<div class="w-2 h-8 bg-secondary-fixed rounded-full"></div>
+<h2 class="font-headline-lg text-headline-lg uppercase">Human Input</h2>
+</div>
+<div class="flex items-center justify-around gap-md">
+<div class="flex flex-col items-center gap-sm flex-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant">ARG</span>
+<input class="w-full text-center bg-surface-container-lowest border-2 border-white/10 rounded-xl font-display-lg text-display-lg py-md focus:border-secondary-fixed focus:ring-0 transition-all placeholder:text-surface-variant" max="99" min="0" placeholder="0" type="number"/>
+</div>
+<div class="font-display-lg text-display-lg text-on-surface-variant/20">:</div>
+<div class="flex flex-col items-center gap-sm flex-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant">NED</span>
+<input class="w-full text-center bg-surface-container-lowest border-2 border-white/10 rounded-xl font-display-lg text-display-lg py-md focus:border-secondary-fixed focus:ring-0 transition-all placeholder:text-surface-variant" max="99" min="0" placeholder="0" type="number"/>
+</div>
+</div>
+<div class="mt-auto">
+<label class="font-label-sm text-label-sm text-on-surface-variant mb-sm block">PREDICTION RATIONALE (OPTIONAL)</label>
+<textarea class="w-full bg-surface-container-lowest border border-white/5 rounded-lg p-md font-body-md text-body-md focus:border-secondary-fixed focus:ring-0 resize-none transition-all" placeholder="Enter your thoughts on this match..." rows="3"></textarea>
+</div>
+</section>
+<!-- Right: AI Prediction -->
+<section class="glass-card p-lg rounded-xl flex flex-col gap-lg ai-glow relative overflow-hidden bg-primary-fixed/5">
+<div class="absolute top-0 right-0 p-md opacity-20 text-primary-fixed">
+<span class="material-symbols-outlined text-[120px]">psychology</span>
+</div>
+<div class="flex items-center gap-sm">
+<div class="w-2 h-8 bg-primary-fixed rounded-full"></div>
+<h2 class="font-headline-lg text-headline-lg uppercase">AI Forecast</h2>
+</div>
+<div class="flex items-center justify-around gap-md">
+<div class="flex flex-col items-center gap-sm flex-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant">ARG</span>
+<div class="w-full text-center bg-surface-container-lowest border-2 border-primary-fixed/30 rounded-xl font-display-lg text-display-lg py-md text-primary-fixed">
+                            2
+                        </div>
+</div>
+<div class="font-display-lg text-display-lg text-on-surface-variant/20">:</div>
+<div class="flex flex-col items-center gap-sm flex-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant">NED</span>
+<div class="w-full text-center bg-surface-container-lowest border-2 border-white/10 rounded-xl font-display-lg text-display-lg py-md text-on-surface">
+                            1
+                        </div>
+</div>
+</div>
+<div class="space-y-md">
+<div>
+<div class="flex justify-between items-center mb-xs">
+<span class="font-label-sm text-label-sm text-on-surface-variant">AI CONFIDENCE LEVEL</span>
+<span class="font-label-sm text-label-sm text-primary-fixed">87%</span>
+</div>
+<div class="h-1.5 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary-fixed shadow-[0_0_10px_#00dbe9]" style="width: 87%"></div>
+</div>
+</div>
+<div class="bg-surface-container-lowest/50 p-md rounded-lg border border-primary-fixed/10">
+<div class="flex items-center gap-xs mb-xs">
+<span class="material-symbols-outlined text-primary-fixed text-[18px]">info</span>
+<span class="font-label-sm text-label-sm text-primary-fixed">REASONING ENGINE V4.2</span>
+</div>
+<p class="font-body-md text-on-surface-variant leading-relaxed italic">
+                            "Based on recent form (ARG: W-W-D, NED: W-D-L) and historical head-to-head dominance. Messi's individual xG contribution in knockout stages is currently 0.42 above the tournament mean. Netherlands defensive transition shows vulnerability to low-block counters."
+                        </p>
+</div>
+</div>
+</section>
+</div>
+<!-- Submit Section -->
+<div class="mt-lg flex flex-col md:flex-row items-center justify-between gap-lg border-t border-white/10 pt-lg">
+<div class="flex items-center gap-md">
+<div class="flex -space-x-base">
+<div class="w-10 h-10 rounded-full border-2 border-background overflow-hidden bg-surface-container-highest">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a diverse male sports analyst with a clean, tech-focused background, wearing a modern navy polo shirt. The lighting is crisp and cool, highlighting the analytical and professional mood of a sports prediction platform. High-contrast and sharp focus." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB9aKTJtx3Cw4JSLQLDhtaj2xQJIxbDiSh43aOhM19LktOuPTBFg_rfcExT5j_U7lApA7YUYZNQziR7wdfNUCP0JoZuC5-iS58zj3oMZ58zMbsJgLwBI55GS22SVWhiJ9ovJqLWVlx6cSqgX8aOl3iykPTeGqRwSeA1_nNAg0TuVXoHfNMk1i7gqymLAS4BZKWBO8O3AuwxikVui6Hm-rvnrbsstyyctf5-4pC4JQxRMcXWSKDlUmxUDIhOXStXjZa87qI_4s2aiw"/>
+</div>
+<div class="w-10 h-10 rounded-full border-2 border-background overflow-hidden bg-surface-container-highest flex items-center justify-center text-primary-fixed">
+<span class="material-symbols-outlined">auto_awesome</span>
+</div>
+</div>
+<p class="font-label-sm text-label-sm text-on-surface-variant">
+<span class="text-on-surface">12,492 Players</span> have already locked predictions.
+                </p>
+</div>
+<button class="group relative w-full md:w-auto px-xl py-md bg-secondary-fixed text-on-secondary-fixed font-title-md text-title-md rounded-full active:scale-95 transition-all flex items-center justify-center gap-sm overflow-hidden">
+<div class="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform"></div>
+<span class="relative z-10 flex items-center gap-sm font-bold uppercase tracking-tight">
+                    Save Predictions
+                    <span class="material-symbols-outlined">arrow_forward</span>
+</span>
+</button>
+</div>
+</main>
+<!-- Footer -->
+<footer class="w-full mt-auto bg-surface-container-lowest border-t border-white/5 flex flex-col md:flex-row justify-between items-center px-margin-mobile md:px-margin-desktop py-xl gap-md">
+<div class="font-label-sm text-label-sm text-on-surface-variant/60">© 2024 ARENA AI ANALYTICS</div>
+<div class="flex gap-md flex-wrap justify-center">
+<a class="font-label-sm text-label-sm text-secondary-fixed font-bold" href="#">Tournament Status: LIVE</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant/60 hover:text-secondary-fixed-dim transition-colors" href="#">Tech Stack</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant/60 hover:text-secondary-fixed-dim transition-colors" href="#">API Docs</a>
+</div>
+</footer>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center py-2 px-gutter bg-surface-container/90 backdrop-blur-lg border-t border-white/5 shadow-[0_-4px_20px_rgba(0,0,0,0.5)] z-50 rounded-t-full">
+<div class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-6 py-1 active:scale-90 transition-transform cursor-pointer">
+<span class="material-symbols-outlined">query_stats</span>
+<span class="font-label-sm text-label-sm">Predict</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary-fixed active:scale-90 transition-transform cursor-pointer">
+<span class="material-symbols-outlined">leaderboard</span>
+<span class="font-label-sm text-label-sm">Leaderboard</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary-fixed active:scale-90 transition-transform cursor-pointer">
+<span class="material-symbols-outlined">sports_soccer</span>
+<span class="font-label-sm text-label-sm">Results</span>
+</div>
+</nav>
+<!-- Visual Atmosphere: Subtle Shader -->
+<div class="fixed inset-0 pointer-events-none -z-10 overflow-hidden">
+<div class="absolute top-0 left-1/4 w-[500px] h-[500px] bg-primary-fixed/5 blur-[120px] rounded-full"></div>
+<div class="absolute bottom-0 right-1/4 w-[600px] h-[600px] bg-secondary-fixed/5 blur-[150px] rounded-full"></div>
+</div>
+<script>
+        // Micro-interactions for the inputs
+        const inputs = document.querySelectorAll('input[type="number"]');
+        inputs.forEach(input => {
+            input.addEventListener('focus', () => {
+                input.parentElement.parentElement.classList.add('ring-2', 'ring-primary-fixed/20');
+            });
+            input.addEventListener('blur', () => {
+                input.parentElement.parentElement.classList.remove('ring-2', 'ring-primary-fixed/20');
+            });
+        });
+
+        // Add ripple effect logic here if needed for higher fidelity
+    </script>
+</body></html>

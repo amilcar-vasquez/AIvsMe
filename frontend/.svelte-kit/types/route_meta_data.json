@@ -1,0 +1,11 @@
+{
+	"/": [
+		"src/routes/+page.ts"
+	],
+	"/matches/[id]": [
+		"src/routes/matches/[id]/+page.ts"
+	],
+	"/results": [
+		"src/routes/results/+page.ts"
+	]
+}
