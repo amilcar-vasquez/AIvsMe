@@ -1,6 +1,9 @@
+from datetime import timedelta
+
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from django.utils import timezone
 
 from apps.matches.models import Match
 from apps.matches.serializers import MatchSerializer, SetResultSerializer
@@ -16,6 +19,25 @@ class MatchViewSet(viewsets.ReadOnlyModelViewSet):
     @action(detail=False, methods=["get"], url_path="upcoming")
     def upcoming(self, request):
         queryset = self.get_queryset().filter(status=Match.Status.UPCOMING)
+        return Response(self.get_serializer(queryset, many=True).data)
+
+    @action(detail=False, methods=["get"], url_path="upcoming-window")
+    def upcoming_window(self, request):
+        try:
+            days = int(request.query_params.get("days", "3"))
+        except ValueError:
+            days = 3
+        days = min(max(days, 1), 14)
+
+        now = timezone.now()
+        start = (now + timedelta(days=1)).replace(hour=0, minute=0, second=0, microsecond=0)
+        end = start + timedelta(days=days)
+
+        queryset = self.get_queryset().filter(
+            status=Match.Status.UPCOMING,
+            kickoff_time__gte=start,
+            kickoff_time__lt=end,
+        )
         return Response(self.get_serializer(queryset, many=True).data)
 
     @action(detail=False, methods=["get"], url_path="completed")

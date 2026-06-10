@@ -17,6 +17,7 @@
 - `GET /api/teams/{id}/`
 - `GET /api/matches/`
 - `GET /api/matches/upcoming/`
+- `GET /api/matches/upcoming-window/?days=3`
 - `GET /api/matches/completed/`
 - `POST /api/matches/{id}/set-result/`
 - `GET /api/predictions/`
@@ -112,6 +113,7 @@ Import public World Cup matches directly into `Team` and `Match` models:
 
 - `python manage.py import_world_cup_matches --source worldcupjson --update-existing`
 - `python manage.py import_world_cup_matches --source openfootball --update-existing`
+- `python manage.py import_world_cup_2026_schedule --replace-existing` (imports all 104 FIFA World Cup 2026 fixtures)
 
 Primary source:
 - `https://worldcupjson.net/matches`

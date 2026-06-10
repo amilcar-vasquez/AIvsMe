@@ -8,6 +8,9 @@ export const worldCupApi = {
   getUpcomingMatches(fetchFn: typeof fetch) {
     return apiGet<Match[]>("/matches/upcoming/", fetchFn);
   },
+  getUpcomingWindow(days: number, fetchFn: typeof fetch) {
+    return apiGet<Match[]>(`/matches/upcoming-window/?days=${days}`, fetchFn);
+  },
   getCompletedMatches(fetchFn: typeof fetch) {
     return apiGet<Match[]>("/matches/completed/", fetchFn);
   },

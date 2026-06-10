@@ -20,7 +20,7 @@ export const load = async ({ fetch }: Parameters<PageLoad>[0]) => {
   try {
     [scoreboard, upcoming] = await Promise.all([
       worldCupApi.getScoreboard(fetch),
-      worldCupApi.getUpcomingMatches(fetch)
+      worldCupApi.getUpcomingWindow(3, fetch)
     ]);
   } catch {
     // Fallback keeps dashboard renderable when API is offline.

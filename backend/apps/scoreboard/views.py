@@ -4,35 +4,35 @@ from django.http import HttpResponse
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-from apps.scoreboard.models import Scoreboard
 from apps.scoreboard.serializers import ScoreboardSerializer
+from apps.scoreboard.services import recalculate_scoreboard
 
 
 class ScoreboardView(APIView):
     def get(self, request):
-        scoreboard, _ = Scoreboard.objects.get_or_create()
+        scoreboard = recalculate_scoreboard()
         return Response(ScoreboardSerializer(scoreboard).data)
 
 
 class ScoreboardSocialCardView(APIView):
-        def get(self, request):
-                scoreboard, _ = Scoreboard.objects.get_or_create()
-                ratio = request.query_params.get("ratio", "9:16")
-                if ratio == "16:9":
-                        width, height = 1600, 900
-                elif ratio == "1:1":
-                        width, height = 1080, 1080
-                else:
-                        width, height = 1080, 1920
+    def get(self, request):
+        scoreboard = recalculate_scoreboard()
+        ratio = request.query_params.get("ratio", "9:16")
+        if ratio == "16:9":
+            width, height = 1600, 900
+        elif ratio == "1:1":
+            width, height = 1080, 1080
+        else:
+            width, height = 1080, 1920
 
-                if scoreboard.human_points == scoreboard.ai_points:
-                        leader = "TIE"
-                elif scoreboard.human_points > scoreboard.ai_points:
-                        leader = "HUMAN LEADS"
-                else:
-                        leader = "AI LEADS"
+        if scoreboard.human_points == scoreboard.ai_points:
+            leader = "TIE"
+        elif scoreboard.human_points > scoreboard.ai_points:
+            leader = "HUMAN LEADS"
+        else:
+            leader = "AI LEADS"
 
-                svg = f"""
+        svg = f"""
 <svg xmlns='http://www.w3.org/2000/svg' width='{width}' height='{height}' viewBox='0 0 {width} {height}'>
     <defs>
         <linearGradient id='bg' x1='0%' y1='0%' x2='100%' y2='100%'>
@@ -73,6 +73,6 @@ class ScoreboardSocialCardView(APIView):
 </svg>
 """.strip()
 
-                response = HttpResponse(svg, content_type="image/svg+xml")
-                response["Cache-Control"] = "no-store"
-                return response
+        response = HttpResponse(svg, content_type="image/svg+xml")
+        response["Cache-Control"] = "no-store"
+        return response
